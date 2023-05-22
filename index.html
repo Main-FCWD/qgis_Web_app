@@ -147,7 +147,7 @@
           variables: {},
         };
         // Start of if blocks and style check logic
-        if (exp_GPS_2rule0_eval_expression(context)) {
+        if (10 === feature.properties.Route) {
           return {
             pane: "pane_GPS_2",
             shape: "diamond",
@@ -290,39 +290,37 @@
 
 
 
-    var layer_GPS_2 = new L.geoJson(json_GPS_2, {
+      var layer_GPS_2 = new L.geoJson(json_GPS_2, {
+        attribution: '',
+        interactive: true,
+        dataVar: 'json_GPS_2',
+        layerName: 'Meters',
+        pane: 'pane_GPS_2',
+        //onEachFeature: pop_GPS_2,
+        pointToLayer: function (feature, latlng) {
+          if(feature.properties.Route)
+            return L.shapeMarker(latlng)
+            //return L.shapeMarker(latlng, style_GPS_2_0(feature));
+        },
+    });
+  
+    var rt_10 = new L.geoJson(json_GPS_2, {
       attribution: '',
       interactive: true,
       dataVar: 'json_GPS_2',
       layerName: 'Meters',
       pane: 'pane_GPS_2',
       onEachFeature: pop_GPS_2,
-      filter: function routeNumber(route) {
-        
-      } ,
       pointToLayer: function (feature, latlng) {
-          var context = {
-              feature: feature,
-              variables: {}
-          };
+        if(10 === feature.properties.Route)
+        console.log(feature.properties.Route)
           return L.shapeMarker(latlng, style_GPS_2_0(feature));
       },
   });
-
-  var allFeatures = Object.values(layer_GPS_2._layers);
-  var featureRoute = allFeatures[0].feature.properties.Route;
-
-    console.log(featureRoute);
-
-
-    if (grpSilverCreek.includes(featureRoute)) {
-      if (!routeGroups.hasOwnProperty(featureRoute)) {
-        routeGroups[featureRoute] = [];
-        console.log("if not")
-      }
-      grpSilverCreek[featureRoute].push(feature);
-      console.log("if true")
-    }
+  
+  
+  
+  map.addLayer(rt_10);
 
 //    for (var featureRoute in routeGroups) {
 //      var routeLayer = L.layerGroup(layer_GPS_2._layers);

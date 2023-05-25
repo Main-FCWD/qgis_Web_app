@@ -511,7 +511,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	position: absolute;
 	top: 0;
 	right: 0;
-	padding: 4px 4px 0 0;
+	padding: 4px 4px 0 0 !important;
 	border: none;
 	text-align: center;
 	width: 18px;
@@ -577,6 +577,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	user-select: none;
 	pointer-events: none;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+	font-weight: bold;
+
 	}
 .leaflet-tooltip.leaflet-clickable {
 	cursor: pointer;

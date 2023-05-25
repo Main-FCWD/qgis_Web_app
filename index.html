@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="css/qgis2web.css" />
     <link rel="stylesheet" href="css/fontawesome-all.min.css" />
     <link rel="stylesheet" href="css/L.Control.Layers.Tree.css" />
+    <link rel="stylesheet" href="css/pico.css" />
+    <link rel="stylesheet" href="css/leaflet.label.css" />
+    <link rel="stylesheet" href="css/Icon.Label.css" />
     <style>
       html,
       body,
@@ -40,19 +43,30 @@
     <script src="data/GPS_2.js"></script>
     <script src="data/FloydCountyFill_3.js"></script>
     <script src="js/L.Control.Layers.Tree.js"></script>
+    <script src="js/leaflet.label.js"></script>
+    <script src="js/Icon.Label.js"></script>
+    <script src="js/Marker.Label.js"></script>
+    <script src="js/leaflet.iconlabel.js"></script>
     <script>
+      // Map Call //
       var map = L.map("map", {
         zoomControl: true,
         maxZoom: 28,
         minZoom: 1,
       });
       var hash = new L.Hash(map);
+
+      // Credit and Attribution //
       map.attributionControl.setPrefix(
         '<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>'
       );
+
+      // Autolinker //
       var autolinker = new Autolinker({
         truncate: { length: 30, location: "smart" },
       });
+
+      // Map Bounds //
       var bounds_group = new L.featureGroup([]);
       function setBounds() {
         if (bounds_group.getLayers().length) {
@@ -62,6 +76,8 @@
       }
       map.createPane("pane_OSMStandard_0");
       map.getPane("pane_OSMStandard_0").style.zIndex = 400;
+
+      // Open Street Map Creation //
       var layer_OSMStandard_0 = L.tileLayer(
         "http://tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
@@ -75,10 +91,14 @@
           maxNativeZoom: 19,
         }
       );
+      layer_OSMStandard_0;
+      map.addLayer(layer_OSMStandard_0);
+
+      // Dark Open Street Map Creation //
       var layer_OSMStandard_dark = L.tileLayer(
         "http://tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
-          className: 'map-tiles',
+          className: "map-tiles",
           opacity: 1.0,
           minZoom: 1,
           maxZoom: 28,
@@ -86,9 +106,8 @@
           maxNativeZoom: 19,
         }
       );
-      layer_OSMStandard_0;
-      map.addLayer(layer_OSMStandard_0);
-      map.addLayer(layer_OSMStandard_dark);
+
+      // Google Satellite Base Map Creation //
       map.createPane("pane_GoogleSatellite_1");
       map.getPane("pane_GoogleSatellite_1").style.zIndex = 401;
       var layer_GoogleSatellite_1 = L.tileLayer(
@@ -105,19 +124,16 @@
       );
       layer_GoogleSatellite_1;
 
+      // Pop-up Information //
       function pop_GPS_2(feature, layer) {
         var popupContent =
           '<table>\
-                    <tr>\
-                        <td colspan="2"><strong>Address</strong><br />' +
+                    <caption style="font-size:17px;text-align:left;margin-bottom:inherit;margin-top:5px;font-weight:bold;width:max-content">' +
           (feature.properties["Address"] !== null
             ? autolinker.link(feature.properties["Address"].toLocaleString())
             : "") +
-          '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Meter Number</th>\
-                        <td>' +
+          '</caption>\
+                    <tr style="font-size:13px;width:0.1%;white-space:nowrap;">\ <th style="font-size:13px;width:0.1%;white-space:nowrap;padding-left:0px;padding-right:0px;text-align:right;font-weight:bold;border-bottom:none;" scope="row">Meter #:</th>\<td style="font-size:13px;width:0.1%;white-space:nowrap;">' +
           (feature.properties["Meter Number"] !== null
             ? autolinker.link(
                 feature.properties["Meter Number"].toLocaleString()
@@ -125,9 +141,7 @@
             : "") +
           '</td>\
                     </tr>\
-                    <tr>\
-                        <th scope="row">Account Number</th>\
-                        <td>' +
+                    <tr style="font-size:13px;width:0.1%;white-space:nowrap;" >\<th style="font-size:13px;width:0.1%;white-space:nowrap;padding-left:0px;padding-right:0px;text-align:right;font-weight:bold;border-bottom:none;" scope="row">Account #:</th>\<td style="font-size:13px;width:0.1%;white-space:nowrap;">' +
           (feature.properties["Account Number"] !== null
             ? autolinker.link(
                 feature.properties["Account Number"].toLocaleString()
@@ -135,17 +149,13 @@
             : "") +
           '</td>\
                     </tr>\
-                    <tr>\
-                        <th scope="row">Route</th>\
-                        <td>' +
+                    <tr style="font-size:13px;width:0.1%;white-space:nowrap;" >\<th style="font-size:13px;width:0.1%;white-space:nowrap;padding-left:0px;padding-right:0px;text-align:right;font-weight:bold;border-bottom:none;" scope="row">Route:</th>\<td style="font-size:13px;width:0.1%;white-space:nowrap;">' +
           (feature.properties["Route"] !== null
             ? autolinker.link(feature.properties["Route"].toLocaleString())
             : "") +
           '</td>\
                     </tr>\
-                    <tr>\
-                        <th scope="row">Condition</th>\
-                        <td>' +
+                    <tr style="font-size:13px;width:0.1%;white-space:nowrap;" >\<th style="font-size:13px;width:0.1%;white-space:nowrap;padding-left:0px;padding-right:0px;text-align:right;font-weight:bold;border-bottom:none;" scope="row">Condition:</th>\<td style="font-size:13px;width:0.1%;white-space:nowrap;">' +
           (feature.properties["Condition"] !== null
             ? autolinker.link(feature.properties["Condition"].toLocaleString())
             : "") +
@@ -155,11 +165,13 @@
         layer.bindPopup(popupContent, { maxHeight: 400 });
       }
 
+      // Point & Marker Customization //
       function style_GPS_2_0(feature) {
         var context = {
           feature: feature,
           variables: {},
         };
+
         // Start of if blocks and style check logic
         if (grpSilverCreek.includes(feature.properties.Route)) {
           return {
@@ -176,6 +188,7 @@
             fillOpacity: 1,
             fillColor: "rgba(84,176,74,1.0)",
             interactive: true,
+            bindtooltip: "test300"
           };
         } else if (exp_GPS_2rule1_eval_expression(context)) {
           return {
@@ -262,34 +275,25 @@
         }
       }
 
+      // Map Creation Calls //
       map.createPane("pane_GPS_2");
       map.getPane("pane_GPS_2").style.zIndex = 402;
       map.getPane("pane_GPS_2").style["mix-blend-mode"] = "normal";
 
-
-
-
-
-      
-
-
-
-
-
-
-
-
       //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+      // Grouping Routes //
       var routes = [];
 
       var routeGroups = {
-        SilverCreek: [10,11,12,13,14,15,16,17,18,19,23,24,25,26,27,28,29],
-        Lindale: [20,21,22,30,31,32,33],
-        Kingston: [42,43,44,45,46,47,48],
-        Shannon: [50,51,52,53,61,62],
-        Armuchee: [68,69,70,71,72,73,74,75,77,78,79],
-        Coosa: [80,81,82,83,84,85,91],
+        SilverCreek: [
+          10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 23, 24, 25, 26, 27, 28, 29,
+        ],
+        Lindale: [20, 21, 22, 30, 31, 32, 33],
+        Kingston: [42, 43, 44, 45, 46, 47, 48],
+        Shannon: [50, 51, 52, 53, 61, 62],
+        Armuchee: [68, 69, 70, 71, 72, 73, 74, 75, 77, 78, 79],
+        Coosa: [80, 81, 82, 83, 84, 85, 91],
       };
 
       var grpSilverCreek = Object.values(routeGroups)[0];
@@ -298,863 +302,939 @@
       var grpShannon = Object.values(routeGroups)[3];
       var grpArmuchee = Object.values(routeGroups)[4];
       var grpCoosa = Object.values(routeGroups)[5];
-      
 
-  
-  var rt_10 = new L.geoJson(json_GPS_2, {
-      attribution: '',
-      interactive: true,
-      dataVar: 'json_GPS_2',
-      layerName: 'Meters',
-      pane: 'pane_GPS_2',
-      filter: function(feature, layer) {
-        return (feature.properties.Route === 10);
-      },
-      onEachFeature: pop_GPS_2,
-      pointToLayer: function (feature, latlng) {
-          return L.shapeMarker(latlng, style_GPS_2_0(feature));
-      },
-  });
+      var tooltipThreshold = 18;
+      var lastZoom;
+      map.on('zoomend', function() {
+          var zoom = map.getZoom();
+          if (zoom < tooltipThreshold && (!lastZoom || lastZoom >= tooltipThreshold)) {
+              map.eachLayer(function(l) {
+                  if (l.getTooltip()) {
+                      var tooltip = l.getTooltip();
+                      l.unbindTooltip().bindTooltip(tooltip, {
+                          permanent: false
+                      })
+                  }
+              })
+          } else if (zoom >= tooltipThreshold && (!lastZoom || lastZoom < tooltipThreshold)) {
+              map.eachLayer(function(l) {
+                  if (l.getTooltip()) {
+                      var tooltip = l.getTooltip();
+                      l.unbindTooltip().bindTooltip(tooltip, {
+                          permanent: true
+                      })
+                  }
+              });
+          }
+          lastZoom = zoom;
+      })
 
-  var rt_11 = new L.geoJson(json_GPS_2, {
-    attribution: '',
-    interactive: true,
-    dataVar: 'json_GPS_2',
-    layerName: 'Meters',
-    pane: 'pane_GPS_2',
-    filter: function(feature, layer) {
-      return (feature.properties.Route === 11);
-    },
-    onEachFeature: pop_GPS_2,
-    pointToLayer: function (feature, latlng) {
-        return L.shapeMarker(latlng, style_GPS_2_0(feature));
-    },
-});
+     
+      var tooltipOptions = {
+        direction: 'auto',
+        permaent: lastZoom,
+      };
 
-var rt_12 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 12);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      // Layers for Routes //
+      var rt_10 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 10;
+        },
+        onEachFeature: pop_GPS_2,
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_13 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 13);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_11 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 11;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_14 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 14);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_12 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 12;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_15 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 15);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_13 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 13;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_16 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 16);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_14 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 14;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_17 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 17);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_15 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 15;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_18 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 18);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_16 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 16;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_19 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 19);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_17 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 17;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_20 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 20);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_18 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 18;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_21 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 21);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_19 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 19;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_22 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 22);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_20 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 20;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_23 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 23);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
-  
-var rt_24 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 24);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_21 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 21;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_25 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 25);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_22 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 22;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_26 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 26);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_23 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 23;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_27 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 27);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_24 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 24;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_28 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 28);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_25 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 25;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_29 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 29);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_26 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 26;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_30 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 30);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_27 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 27;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_31 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 31);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_28 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 28;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_32 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 32);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_29 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 29;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_33 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 33);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_30 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 30;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_33 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 33);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_31 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 31;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_42 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 42);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_32 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 32;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_43 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 43);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_33 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 33;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_44 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 44);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_33 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 33;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_45 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 45);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_42 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 42;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_46 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 46);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_43 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 43;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_47 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 47);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_44 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 44;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_48 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 48);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_45 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 45;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_50 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 50);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_46 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 46;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_51 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 51);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_47 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 47;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_52 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 52);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_48 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 48;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_53 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 53);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_50 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 50;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_61 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 61);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_51 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 51;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_62 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 62);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_52 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 52;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_68 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 68);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_53 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 53;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_69 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 69);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_61 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 61;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_70 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 70);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_62 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 62;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_71 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 71);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_68 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 68;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_72 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 72);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_69 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 69;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_73 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 73);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_70 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 70;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_74 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 74);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_71 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 71;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_75 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 75);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_72 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 72;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_77 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 77);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_73 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 73;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_78 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 78);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_74 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 74;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_79 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 79);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_75 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 75;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_80 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 80);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_77 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 77;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_81 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 81);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_78 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 78;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_82 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 82);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_79 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 79;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_83 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 83);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_80 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 80;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_84 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 84);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_81 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 81;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_85 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 85);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
+      var rt_82 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 82;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-var rt_91 = new L.geoJson(json_GPS_2, {
-  attribution: '',
-  interactive: true,
-  dataVar: 'json_GPS_2',
-  layerName: 'Meters',
-  pane: 'pane_GPS_2',
-  filter: function(feature, layer) {
-    return (feature.properties.Route === 91);
-  },
-  onEachFeature: pop_GPS_2,
-  pointToLayer: function (feature, latlng) {
-      return L.shapeMarker(latlng, style_GPS_2_0(feature));
-  },
-});
-  
-  map.addLayer(rt_10, rt_11, rt_12, rt_13, rt_14, rt_15, rt_16, rt_17, rt_18, rt_19, rt_20,rt_21,rt_22,rt_23,rt_24,rt_25,rt_26,rt_27,rt_28,rt_29,
-  rt_30,rt_31,rt_32,rt_33,
-  rt_42,rt_43,rt_44,rt_45,rt_46,rt_47,rt_48,
-  rt_50,rt_51,rt_52,rt_53,rt_61,rt_62,
-  rt_68,rt_69,rt_70,rt_71,rt_72,rt_73,rt_74,rt_75,rt_77,rt_78,rt_79,
-  rt_80,rt_81,rt_82,rt_83,rt_84,rt_85,rt_91);
+      var rt_83 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 83;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
+      var rt_84 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 84;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
+      var rt_85 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 85;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
+      var rt_91 = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Route === 91;
+        },
+        onEachFeature: pop_GPS_2,
+       pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"])
+          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        },
+      });
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
+      console.log(rt_10);
 
-
-
+      // County Outline Layer //
       function pop_FloydCountyFill_3(feature, layer) {
         var popupContent =
           "<table>\
@@ -1190,132 +1270,131 @@ var rt_91 = new L.geoJson(json_GPS_2, {
       bounds_group.addLayer(layer_FloydCountyFill_3);
       map.addLayer(layer_FloydCountyFill_3);
 
-
+      // Layer Control Settings //
       var baseTree = {
-        label: 'Base Layers',
+        label: "Base Layers",
         children: [
-            {
-                label: 'Base Maps',
-                children: [
-                    { label: 'OpenStreetMap', layer: layer_OSMStandard_0 },
-                    { label: 'Google Satellite', layer: layer_GoogleSatellite_1 },
-                    { label: 'OpenStreerMap Dark Mode', layer: layer_OSMStandard_dark }
-                    /* ... */
-            ]}
-          ]};
+          {
+            label: "Base Maps",
+            children: [
+              { label: "OpenStreetMap", layer: layer_OSMStandard_0 },
+              { label: "Google Satellite", layer: layer_GoogleSatellite_1 },
+              {
+                label: "OpenStreerMap Dark Mode",
+                layer: layer_OSMStandard_dark,
+              },
+              /* ... */
+            ],
+          },
+        ],
+      };
 
-            var overlaysTree = {
-              label: 'Meters',
-              children: [
-                  {
-                      label: 'Silver Creek',
-                      selectAllCheckbox: true,
-                      collapsed: true,
-                      children: [
-                          
-                                  { label: 'Route 10', layer: rt_10 },
-                                  { label: 'Route 11', layer: rt_11 },
-                                  { label: 'Route 12', layer: rt_12 },
-                                  { label: 'Route 13', layer: rt_13 },
-                                  { label: 'Route 14', layer: rt_14 },
-                                  { label: 'Route 15', layer: rt_15 },
-                                  { label: 'Route 16', layer: rt_16 },
-                                  { label: 'Route 17', layer: rt_17 },
-                                  { label: 'Route 18', layer: rt_18 },
-                                  { label: 'Route 19', layer: rt_19 },
-                                  { label: 'Route 20', layer: rt_20 },
-                                  { label: 'Route 23', layer: rt_23 },
-                                  { label: 'Route 24', layer: rt_24 },
-                                  { label: 'Route 25', layer: rt_25 },
-                                  { label: 'Route 26', layer: rt_26 },
-                                  { label: 'Route 27', layer: rt_27 },
-                                  { label: 'Route 28', layer: rt_28 },
-                                  { label: 'Route 29', layer: rt_29 },
-                          ]
-                      },
-                      {
-                        label: 'Lindale',
-                        selectAllCheckbox: true,
-                        collapsed: true,
-                        children: [
-                            
-                                    { label: 'Route 21', layer: rt_21 },
-                                    { label: 'Route 22', layer: rt_22 },
-                                    { label: 'Route 30', layer: rt_30 },
-                                    { label: 'Route 31', layer: rt_31 },
-                                    { label: 'Route 32', layer: rt_32 },
-                                    { label: 'Route 33', layer: rt_33 },
-                            ]
-                        },
-                        {
-                          label: 'Kingston',
-                          selectAllCheckbox: true,
-                          collapsed: true,
-                          children: [
-                              
-                                      { label: 'Route 42', layer: rt_42 },
-                                      { label: 'Route 43', layer: rt_43 },
-                                      { label: 'Route 44', layer: rt_44 },
-                                      { label: 'Route 45', layer: rt_45 },
-                                      { label: 'Route 46', layer: rt_46 },
-                                      { label: 'Route 47', layer: rt_47 },
-                                      { label: 'Route 48', layer: rt_48 },
-                              ]
-                          },
-                          {
-                            label: 'Shannon',
-                            selectAllCheckbox: true,
-                            collapsed: true,
-                            children: [
-                                
-                                        { label: 'Route 50', layer: rt_50 },
-                                        { label: 'Route 51', layer: rt_51 },
-                                        { label: 'Route 52', layer: rt_52 },
-                                        { label: 'Route 53', layer: rt_53 },
-                                        { label: 'Route 61', layer: rt_61 },
-                                        { label: 'Route 62', layer: rt_62 },
-                                ]
-                            },
-                            {
-                              label: 'Armuchee',
-                              selectAllCheckbox: true,
-                              collapsed: true,
-                              children: [
-                                  
-                                          { label: 'Route 68', layer: rt_68 },
-                                          { label: 'Route 69', layer: rt_69 },
-                                          { label: 'Route 70', layer: rt_70 },
-                                          { label: 'Route 71', layer: rt_71 },
-                                          { label: 'Route 72', layer: rt_72 },
-                                          { label: 'Route 73', layer: rt_73 },
-                                          { label: 'Route 74', layer: rt_74 },
-                                          { label: 'Route 75', layer: rt_75 },
-                                          { label: 'Route 77', layer: rt_77 },
-                                          { label: 'Route 78', layer: rt_78 },
-                                          { label: 'Route 79', layer: rt_79 },
-                                  ]
-                              },
-                              {
-                                label: 'Coosa',
-                                selectAllCheckbox: true,
-                                collapsed: true,
-                                children: [
-                                    
-                                            { label: 'Route 80', layer: rt_80 },
-                                            { label: 'Route 81', layer: rt_81 },
-                                            { label: 'Route 82', layer: rt_82 },
-                                            { label: 'Route 83', layer: rt_83 },
-                                            { label: 'Route 84', layer: rt_84 },
-                                            { label: 'Route 85', layer: rt_85 },
-                                            { label: 'Route 91', layer: rt_91 },
-                                    ]
-                                }
-                  ]
-                };
+      var overlaysTree = {
+        label: "Meters",
+        children: [
+          {
+            label: "Silver Creek",
+            selectAllCheckbox: true,
+            collapsed: true,
+            children: [
+              { label: "Route 10", layer: rt_10 },
+              { label: "Route 11", layer: rt_11 },
+              { label: "Route 12", layer: rt_12 },
+              { label: "Route 13", layer: rt_13 },
+              { label: "Route 14", layer: rt_14 },
+              { label: "Route 15", layer: rt_15 },
+              { label: "Route 16", layer: rt_16 },
+              { label: "Route 17", layer: rt_17 },
+              { label: "Route 18", layer: rt_18 },
+              { label: "Route 19", layer: rt_19 },
+              { label: "Route 20", layer: rt_20 },
+              { label: "Route 23", layer: rt_23 },
+              { label: "Route 24", layer: rt_24 },
+              { label: "Route 25", layer: rt_25 },
+              { label: "Route 26", layer: rt_26 },
+              { label: "Route 27", layer: rt_27 },
+              { label: "Route 28", layer: rt_28 },
+              { label: "Route 29", layer: rt_29 },
+            ],
+          },
+          {
+            label: "Lindale",
+            selectAllCheckbox: true,
+            collapsed: true,
+            children: [
+              { label: "Route 21", layer: rt_21 },
+              { label: "Route 22", layer: rt_22 },
+              { label: "Route 30", layer: rt_30 },
+              { label: "Route 31", layer: rt_31 },
+              { label: "Route 32", layer: rt_32 },
+              { label: "Route 33", layer: rt_33 },
+            ],
+          },
+          {
+            label: "Kingston",
+            selectAllCheckbox: true,
+            collapsed: true,
+            children: [
+              { label: "Route 42", layer: rt_42 },
+              { label: "Route 43", layer: rt_43 },
+              { label: "Route 44", layer: rt_44 },
+              { label: "Route 45", layer: rt_45 },
+              { label: "Route 46", layer: rt_46 },
+              { label: "Route 47", layer: rt_47 },
+              { label: "Route 48", layer: rt_48 },
+            ],
+          },
+          {
+            label: "Shannon",
+            selectAllCheckbox: true,
+            collapsed: true,
+            children: [
+              { label: "Route 50", layer: rt_50 },
+              { label: "Route 51", layer: rt_51 },
+              { label: "Route 52", layer: rt_52 },
+              { label: "Route 53", layer: rt_53 },
+              { label: "Route 61", layer: rt_61 },
+              { label: "Route 62", layer: rt_62 },
+            ],
+          },
+          {
+            label: "Armuchee",
+            selectAllCheckbox: true,
+            collapsed: true,
+            children: [
+              { label: "Route 68", layer: rt_68 },
+              { label: "Route 69", layer: rt_69 },
+              { label: "Route 70", layer: rt_70 },
+              { label: "Route 71", layer: rt_71 },
+              { label: "Route 72", layer: rt_72 },
+              { label: "Route 73", layer: rt_73 },
+              { label: "Route 74", layer: rt_74 },
+              { label: "Route 75", layer: rt_75 },
+              { label: "Route 77", layer: rt_77 },
+              { label: "Route 78", layer: rt_78 },
+              { label: "Route 79", layer: rt_79 },
+            ],
+          },
+          {
+            label: "Coosa",
+            selectAllCheckbox: true,
+            collapsed: true,
+            children: [
+              { label: "Route 80", layer: rt_80 },
+              { label: "Route 81", layer: rt_81 },
+              { label: "Route 82", layer: rt_82 },
+              { label: "Route 83", layer: rt_83 },
+              { label: "Route 84", layer: rt_84 },
+              { label: "Route 85", layer: rt_85 },
+              { label: "Route 91", layer: rt_91 },
+            ],
+          },
+        ],
+      };
 
-var options = {
-  collapseAll: "True"
-}
+      var options = {
+        collapseAll: "",
+      };
 
       L.control.layers.tree(baseTree, overlaysTree, options).addTo(map);
 

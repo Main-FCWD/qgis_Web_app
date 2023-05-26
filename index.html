@@ -1515,9 +1515,12 @@
       var LayerControlContainer = document.querySelector("#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div > section")
 
       var CollapseBtn =`<div style="float:right;filter: hue-rotate(115deg);"><img src="css/images/cancel.png"></div>`;
+      
       LayerControlContainer.insertAdjacentHTML("afterbegin", CollapseBtn)
 
-      LayerControlContainer.addEventListener("click", () => {
+      var layerCollapseBtn = document.querySelector("#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div > section > div:nth-child(1)");
+
+      layerCollapseBtn.addEventListener("click", () => {
         document.querySelector("#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div").removeAttribute("leaflet-control-layers-expanded");
         document.querySelector("#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div").setAttribute("class","leaflet-control-layers leaflet-control-layers-collapsed leaflet-control");
       })

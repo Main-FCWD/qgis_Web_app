@@ -1272,21 +1272,16 @@
 
       // Layer Control Settings //
       var baseTree = {
-        label: "Base Layers",
-        children: [
-          {
             label: "Base Maps",
             children: [
               { label: "OpenStreetMap", layer: layer_OSMStandard_0 },
               { label: "Google Satellite", layer: layer_GoogleSatellite_1 },
               {
-                label: "OpenStreerMap Dark Mode",
+                label: "OpenStreetMap Dark Mode",
                 layer: layer_OSMStandard_dark,
               },
               /* ... */
             ],
-          },
-        ],
       };
 
       var overlaysTree = {
@@ -1397,6 +1392,34 @@
       };
 
       L.control.layers.tree(baseTree, overlaysTree, options).addTo(map);
+
+      var layerControl = document.querySelector("#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div")
+      var darkMap = document.querySelector("#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div > section > div.leaflet-control-layers-base > div.leaflet-layerstree-children > div > div.leaflet-layerstree-children > div:nth-child(3) > div > span:nth-child(2) > label > input")
+      var SatelliteMap = document.querySelector("#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div > section > div.leaflet-control-layers-base > div.leaflet-layerstree-children > div > div.leaflet-layerstree-children > div:nth-child(2) > div > span:nth-child(2) > label > input")
+      let Alltooltip = document.getElementsByClassName("leaflet-tooltip");
+
+      // Function to change tooltip color
+function changeTooltipColor(name, color) {
+  var tooltipElements = document.querySelectorAll("#map > div.leaflet-pane.leaflet-map-pane > div.leaflet-pane.leaflet-tooltip-pane > div");
+  console.log(tooltipElements.length)
+  for (var i = 0; i < tooltipElements.length; i++) {
+    var tooltip = tooltipElements[i];
+    if (tooltip.innerHTML != '') {
+      tooltip.style.color = color;
+    }
+  }
+}
+
+// Listen for base layer change event
+map.on('baselayerchange', function (e) {
+  var baseMapName = e.name;
+  console.log(baseMapName)
+  if (baseMapName = 1 || 2) {
+    console.log("basemap statement true")
+    changeTooltipColor(baseMapName, 'white');
+  }
+});
+
 
       setBounds();
     </script>

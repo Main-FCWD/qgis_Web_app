@@ -188,7 +188,7 @@
             fillOpacity: 1,
             fillColor: "rgba(84,176,74,1.0)",
             interactive: true,
-            bindtooltip: "test300"
+            bindtooltip: "test300",
           };
         } else if (exp_GPS_2rule1_eval_expression(context)) {
           return {
@@ -303,35 +303,41 @@
       var grpArmuchee = Object.values(routeGroups)[4];
       var grpCoosa = Object.values(routeGroups)[5];
 
+      // Tooltip Label Creation //
       var tooltipThreshold = 18;
       var lastZoom;
-      map.on('zoomend', function() {
-          var zoom = map.getZoom();
-          if (zoom < tooltipThreshold && (!lastZoom || lastZoom >= tooltipThreshold)) {
-              map.eachLayer(function(l) {
-                  if (l.getTooltip()) {
-                      var tooltip = l.getTooltip();
-                      l.unbindTooltip().bindTooltip(tooltip, {
-                          permanent: false
-                      })
-                  }
-              })
-          } else if (zoom >= tooltipThreshold && (!lastZoom || lastZoom < tooltipThreshold)) {
-              map.eachLayer(function(l) {
-                  if (l.getTooltip()) {
-                      var tooltip = l.getTooltip();
-                      l.unbindTooltip().bindTooltip(tooltip, {
-                          permanent: true
-                      })
-                  }
+      map.on("zoomend", function () {
+        var zoom = map.getZoom();
+        if (
+          zoom < tooltipThreshold &&
+          (!lastZoom || lastZoom >= tooltipThreshold)
+        ) {
+          map.eachLayer(function (l) {
+            if (l.getTooltip()) {
+              var tooltip = l.getTooltip();
+              l.unbindTooltip().bindTooltip(tooltip, {
+                permanent: false,
               });
-          }
-          lastZoom = zoom;
-      })
+            }
+          });
+        } else if (
+          zoom >= tooltipThreshold &&
+          (!lastZoom || lastZoom < tooltipThreshold)
+        ) {
+          map.eachLayer(function (l) {
+            if (l.getTooltip()) {
+              var tooltip = l.getTooltip();
+              l.unbindTooltip().bindTooltip(tooltip, {
+                permanent: true,
+              });
+            }
+          });
+        }
+        lastZoom = zoom;
+      });
 
-     
       var tooltipOptions = {
-        direction: 'auto',
+        direction: "auto",
         permaent: lastZoom,
       };
 
@@ -347,8 +353,10 @@
         },
         onEachFeature: pop_GPS_2,
         pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -362,9 +370,11 @@
           return feature.properties.Route === 11;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -378,9 +388,11 @@
           return feature.properties.Route === 12;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -394,9 +406,11 @@
           return feature.properties.Route === 13;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -410,9 +424,11 @@
           return feature.properties.Route === 14;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -426,9 +442,11 @@
           return feature.properties.Route === 15;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -442,9 +460,11 @@
           return feature.properties.Route === 16;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -458,9 +478,11 @@
           return feature.properties.Route === 17;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -474,9 +496,11 @@
           return feature.properties.Route === 18;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -490,9 +514,11 @@
           return feature.properties.Route === 19;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -506,9 +532,11 @@
           return feature.properties.Route === 20;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -522,9 +550,11 @@
           return feature.properties.Route === 21;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -538,9 +568,11 @@
           return feature.properties.Route === 22;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -554,9 +586,11 @@
           return feature.properties.Route === 23;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -570,9 +604,11 @@
           return feature.properties.Route === 24;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -586,9 +622,11 @@
           return feature.properties.Route === 25;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -602,9 +640,11 @@
           return feature.properties.Route === 26;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -618,9 +658,11 @@
           return feature.properties.Route === 27;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -634,9 +676,11 @@
           return feature.properties.Route === 28;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -650,9 +694,11 @@
           return feature.properties.Route === 29;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -666,9 +712,11 @@
           return feature.properties.Route === 30;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -682,9 +730,11 @@
           return feature.properties.Route === 31;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -698,9 +748,11 @@
           return feature.properties.Route === 32;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -714,9 +766,11 @@
           return feature.properties.Route === 33;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -730,9 +784,11 @@
           return feature.properties.Route === 33;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -746,9 +802,11 @@
           return feature.properties.Route === 42;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -762,9 +820,11 @@
           return feature.properties.Route === 43;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -778,9 +838,11 @@
           return feature.properties.Route === 44;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -794,9 +856,11 @@
           return feature.properties.Route === 45;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -810,9 +874,11 @@
           return feature.properties.Route === 46;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -826,9 +892,11 @@
           return feature.properties.Route === 47;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -842,9 +910,11 @@
           return feature.properties.Route === 48;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -858,9 +928,11 @@
           return feature.properties.Route === 50;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -874,9 +946,11 @@
           return feature.properties.Route === 51;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -890,9 +964,11 @@
           return feature.properties.Route === 52;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -906,9 +982,11 @@
           return feature.properties.Route === 53;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -922,9 +1000,11 @@
           return feature.properties.Route === 61;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -938,9 +1018,11 @@
           return feature.properties.Route === 62;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -954,9 +1036,11 @@
           return feature.properties.Route === 68;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -970,9 +1054,11 @@
           return feature.properties.Route === 69;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -986,9 +1072,11 @@
           return feature.properties.Route === 70;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -1002,9 +1090,11 @@
           return feature.properties.Route === 71;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -1018,9 +1108,11 @@
           return feature.properties.Route === 72;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -1034,9 +1126,11 @@
           return feature.properties.Route === 73;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -1050,9 +1144,11 @@
           return feature.properties.Route === 74;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -1066,9 +1162,11 @@
           return feature.properties.Route === 75;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -1082,9 +1180,11 @@
           return feature.properties.Route === 77;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -1098,9 +1198,11 @@
           return feature.properties.Route === 78;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -1114,9 +1216,11 @@
           return feature.properties.Route === 79;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -1130,9 +1234,11 @@
           return feature.properties.Route === 80;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -1146,9 +1252,11 @@
           return feature.properties.Route === 81;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -1162,9 +1270,11 @@
           return feature.properties.Route === 82;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -1178,9 +1288,11 @@
           return feature.properties.Route === 83;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -1194,9 +1306,11 @@
           return feature.properties.Route === 84;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -1210,9 +1324,11 @@
           return feature.properties.Route === 85;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -1226,9 +1342,11 @@
           return feature.properties.Route === 91;
         },
         onEachFeature: pop_GPS_2,
-       pointToLayer: function (feature, latlng) {
-          var tooltipAddress = autolinker.link(feature.properties["Address"])
-          return L.shapeMarker(latlng, style_GPS_2_0(feature)).bindTooltip(tooltipAddress, tooltipOptions).openTooltip();
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
         },
       });
 
@@ -1272,16 +1390,16 @@
 
       // Layer Control Settings //
       var baseTree = {
-            label: "Base Maps",
-            children: [
-              { label: "OpenStreetMap", layer: layer_OSMStandard_0 },
-              { label: "Google Satellite", layer: layer_GoogleSatellite_1 },
-              {
-                label: "OpenStreetMap Dark Mode",
-                layer: layer_OSMStandard_dark,
-              },
-              /* ... */
-            ],
+        label: "Base Maps",
+        children: [
+          { label: "OpenStreetMap", layer: layer_OSMStandard_0 },
+          { label: "Google Satellite", layer: layer_GoogleSatellite_1 },
+          {
+            label: "OpenStreetMap Dark Mode",
+            layer: layer_OSMStandard_dark,
+          },
+          /* ... */
+        ],
       };
 
       var overlaysTree = {
@@ -1393,35 +1511,54 @@
 
       L.control.layers.tree(baseTree, overlaysTree, options).addTo(map);
 
-      var layerControl = document.querySelector("#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div")
-      var darkMap = document.querySelector("#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div > section > div.leaflet-control-layers-base > div.leaflet-layerstree-children > div > div.leaflet-layerstree-children > div:nth-child(3) > div > span:nth-child(2) > label > input")
-      var SatelliteMap = document.querySelector("#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div > section > div.leaflet-control-layers-base > div.leaflet-layerstree-children > div > div.leaflet-layerstree-children > div:nth-child(2) > div > span:nth-child(2) > label > input")
+      var layerControl = document.querySelector(
+        "#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div"
+      );
+      var darkMap = document.querySelector(
+        "#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div > section > div.leaflet-control-layers-base > div.leaflet-layerstree-children > div > div.leaflet-layerstree-children > div:nth-child(3) > div > span:nth-child(2) > label > input"
+      );
+      var SatelliteMap = document.querySelector(
+        "#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div > section > div.leaflet-control-layers-base > div.leaflet-layerstree-children > div > div.leaflet-layerstree-children > div:nth-child(2) > div > span:nth-child(2) > label > input"
+      );
       let Alltooltip = document.getElementsByClassName("leaflet-tooltip");
 
       // Function to change tooltip color
-function changeTooltipColor(name, color) {
-  var tooltipElements = document.querySelectorAll("#map > div.leaflet-pane.leaflet-map-pane > div.leaflet-pane.leaflet-tooltip-pane > div");
-  console.log(tooltipElements.length)
-  for (var i = 0; i < tooltipElements.length; i++) {
-    var tooltip = tooltipElements[i];
-    if (tooltip.innerHTML != '') {
-      tooltip.style.color = color;
-    }
-  }
-}
+      function changeTooltipColor(name, color) {
+        var tooltipElements = document.querySelectorAll(
+          "#map > div.leaflet-pane.leaflet-map-pane > div.leaflet-pane.leaflet-tooltip-pane > div"
+        );
+        for (var i = 0; i < tooltipElements.length; i++) {
+          var tooltip = tooltipElements[i];
+          if (tooltip.innerHTML != "") {
+            tooltip.style.color = color;
+          }
+        }
+      }
 
-// Listen for base layer change event
-map.on('baselayerchange', function (e) {
-  var baseMapName = e.name;
-  console.log(baseMapName)
-  if (baseMapName = 1 || 2) {
-    console.log("basemap statement true")
-    changeTooltipColor(baseMapName, 'white');
-  }
-});
+      window.onload= setTimeout(waitLoad, 500)
 
+      function waitLoad(){
+        console.log("Loaded!")
+
+
+      // Listen for base layer change event
+      map.on("baselayerchange", function (e) {
+        var baseMapName = e.name;
+        var Titlefont = document.querySelector("body > div.header-bg > span");
+        if (baseMapName != "0") {
+          changeTooltipColor(baseMapName, "white");
+          Titlefont.style.color = "#fff";
+        }
+        if (baseMapName === "0") {
+          Titlefont.style.color = "#415462";
+        }
+      });
+    };
 
       setBounds();
     </script>
   </body>
+  <div class="header-bg">
+    <span>Floyd County Water Department</span>
+  </div>
 </html>

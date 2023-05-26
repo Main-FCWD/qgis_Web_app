@@ -60,7 +60,6 @@ a {
 .leaflet-control-search .search-button,
 .leaflet-control-measure {
   background-color: #f8f8f8 !important;
-  border-radius: 0px !important;
   color: #000000 !important;
 }
 .abstract {
@@ -82,6 +81,8 @@ a {
   border-radius: 5px;
   max-width: 40%;
 }
+
+
 .leaflet-touch .leaflet-control-layers,
 .leaflet-touch .leaflet-bar,
 .leaflet-control-search,
@@ -163,3 +164,4 @@ a {
   font-weight: bold;
   color: #415462;
 }
+

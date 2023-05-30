@@ -1350,6 +1350,24 @@
         },
       });
 
+      var err_DH = new L.geoJson(json_GPS_2, {
+        attribution: "",
+        interactive: true,
+        dataVar: "json_GPS_2",
+        layerName: "Meters",
+        pane: "pane_GPS_2",
+        filter: function (feature, layer) {
+          return feature.properties.Condition != null;
+        },
+        onEachFeature: pop_GPS_2,
+        pointToLayer: function (feature, latlng) {
+          var tooltipAddress = autolinker.link(feature.properties["Address"]);
+          return L.shapeMarker(latlng, style_GPS_2_0(feature))
+            .bindTooltip(tooltipAddress, tooltipOptions)
+            .openTooltip();
+        },
+      });
+
       console.log(rt_10);
 
       // County Outline Layer //
@@ -1502,6 +1520,17 @@
               { label: "Route 91", layer: rt_91 },
             ],
           },
+          {
+            label: "Problems",
+            selectAllCheckbox: true,
+            collapsed:true,
+            children: [
+            { label: "Dead Head", layer: err_DH },
+            { label: "Error Code", layer: "" },
+            { label: "Manual Read", layer: "" },
+            { label: "Crew", layer: "" },
+            ]
+          }
         ],
       };
 
@@ -1514,7 +1543,7 @@
 
       var LayerControlContainer = document.querySelector("#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div > section")
 
-      var CollapseBtn =`<div style="float:right;filter: hue-rotate(115deg);"><img src="css/images/cancel.png"></div>`;
+      var CollapseBtn =`<div><img class="layerControlToggle" src="css/images/lct_button.png"></div>`;
       
       LayerControlContainer.insertAdjacentHTML("afterbegin", CollapseBtn)
 
